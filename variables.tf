@@ -13,3 +13,8 @@ variable "project" {
 variable "ssh_key" {
   default = ""
 }
+
+variable "public_key" {
+  description = "Clé publique SSH pour la VM"
+  type        = string
+}
