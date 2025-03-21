@@ -6,7 +6,7 @@ resource "azurerm_linux_virtual_machine" "ci-cd-vm" {
   network_interface_ids = [
     azurerm_network_interface.ci-cd-nic.id
   ]
-  size                  = "Standard_D2s_v3"
+  size                  = "Standard_B1ms"
   admin_username        = "adminuser"
 
   admin_ssh_key {

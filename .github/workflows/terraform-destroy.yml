@@ -1,0 +1,39 @@
+name: Terraform Destroy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform-destroy:
+    name: Terraform Plan Destroy & Destroy
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan -destroy
+        run: terraform plan -destroy -out=tfplan/plan.destroy.tfplan
+
+      - name: Upload destroy plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-destroy-plan
+          path: tfplan/plan.destroy.tfplan
+
+      - name: Terraform Destroy
+        run: terraform apply -auto-approve tfplan/plan.destroy.tfplan
