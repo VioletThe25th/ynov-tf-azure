@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -30,7 +30,7 @@ jobs:
         run: terraform plan -destroy -out=tfplan/plan.destroy.tfplan
 
       - name: Upload destroy plan
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: terraform-destroy-plan
           path: tfplan/plan.destroy.tfplan
