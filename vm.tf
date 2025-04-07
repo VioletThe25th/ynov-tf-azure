@@ -11,7 +11,9 @@ resource "azurerm_linux_virtual_machine" "ci-cd-vm" {
 
   admin_ssh_key {
     username = "adminuser"
-    public_key = var.public_key
+    # public_key = var.public_key
+    public_key = var.ssh_key
+
   }
 
   source_image_reference {
