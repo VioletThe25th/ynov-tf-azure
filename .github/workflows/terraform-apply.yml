@@ -28,8 +28,10 @@ jobs:
 
       - name: Inject SSH public key from secret
         run: |
-          mkdir -p tfvars
-          echo 'public_key = "${{ secrets.ID_RSA }}"' > tfvars/ssh_key.auto.tfvars
+            mkdir -p tfvars
+            echo 'public_key = "${{ secrets.ID_RSA }}"' > tfvars/ssh_key.auto.tfvars
+            cat tfvars/ssh_key.auto.tfvars
+        
 
       - name: Terraform Init
         run: terraform init -upgrade
@@ -38,7 +40,8 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan/plan.tfplan
+        run: terraform plan -var-file=tfvars/ssh_key.auto.tfvars -out=tfplan/plan.tfplan
+      
 
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
@@ -47,4 +50,5 @@ jobs:
           path: tfplan/plan.tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan/plan.tfplan
+        run: terraform apply -auto-approve -var-file=tfvars/ssh_key.auto.tfvars tfplan/plan.tfplan
+
