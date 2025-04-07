@@ -31,7 +31,6 @@ jobs:
             mkdir -p tfvars
             echo 'public_key = "${{ secrets.ID_RSA }}"' > tfvars/ssh_key.auto.tfvars
             cat tfvars/ssh_key.auto.tfvars
-        
 
       - name: Terraform Init
         run: terraform init -upgrade
