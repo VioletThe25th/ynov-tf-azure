@@ -39,10 +39,12 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
+      - name: Create tfplan directory
+        run: mkdir -p tfplan
+
       - name: Terraform Plan
         run: terraform plan -var-file=tfvars/ssh_key.auto.tfvars -out=tfplan/plan.tfplan
       
-
       - name: Upload Terraform Plan
         uses: actions/upload-artifact@v4
         with:

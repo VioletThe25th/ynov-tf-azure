@@ -27,12 +27,16 @@ jobs:
         run: |
           mkdir -p tfvars
           echo 'public_key = "${{ secrets.ID_RSA }}"' > tfvars/ssh_key.auto.tfvars
+          cat tfvars/ssh_key.auto.tfvars
+
+      - name: Create tfplan directory
+        run: mkdir -p tfplan
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan Destroy
-        run: terraform plan -destroy -out=tfplan/plan.destroy.tfplan
+        run: terraform plan -destroy -var-file=tfvars/ssh_key.auto.tfvars -out=tfplan/plan.destroy.tfplan
 
       - name: Upload Destroy Plan
         uses: actions/upload-artifact@v4
@@ -41,4 +45,4 @@ jobs:
           path: tfplan/plan.destroy.tfplan
 
       - name: Terraform Destroy
-        run: terraform apply -auto-approve tfplan/plan.destroy.tfplan
+        run: terraform apply -auto-approve -var-file=tfvars/ssh_key.auto.tfvars tfplan/plan.destroy.tfplan
